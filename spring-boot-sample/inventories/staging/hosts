@@ -1,0 +1,5 @@
+# Ungrouped hosts
+
+# Hosts for spring-boot-sample servers
+[spring-boot-sample-servers]
+172.16.165.155

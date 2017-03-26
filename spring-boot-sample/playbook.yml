@@ -1,0 +1,7 @@
+---
+- hosts: spring-boot-sample-servers
+
+  gather_facts: yes
+
+  roles:
+  - spring-boot-sample
