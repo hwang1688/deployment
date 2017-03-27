@@ -1,6 +1,14 @@
 ---
 - hosts: spring-boot-sample-servers
 
+  vars:
+    app_user: appuser
+    app_name: spring-boot-sample
+    app_version: 0.0.1
+    app_download_url: http://172.16.165.10/job/spring-boot-sample-pipeline/lastStableBuild/artifact/build/libs/spring-boot-sample-0.0.1.jar
+    app_download_url_user: jkadmin
+    app_download_url_password: 5a54cf80bf7f0549cf57c92a4ac9538b
+
   gather_facts: yes
 
   roles:

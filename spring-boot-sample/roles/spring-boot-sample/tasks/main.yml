@@ -1,31 +1,45 @@
 ---
-- name: shutdown spring-boot-sample.service
+- name: create app group {{ app_user }}
+  group: 
+    name: "{{ app_user }}"
+    system: yes
+    state: present
+
+- name: create app user {{ app_user }}
+  user:
+    name: "{{ app_user }}"
+    system: yes
+    state: present
+    home: "/opt/{{ app_user }}"
+    shell: /bin/bash
+
+- name: shutdown {{ app_name }} service
   systemd:
-    name: spring-boot-sample.service
+    name: "{{ app_name }}.service"
     state: stopped
 
-- name: deploy spring-boot-sample file from jenkins to remote
+- name: deploy {{ app_name }} file
   get_url:
-    url: http://172.16.165.10/job/spring-boot-sample-pipeline/lastStableBuild/artifact/build/libs/spring-boot-sample-0.0.1.jar
-    dest: /home/sbadmin/spring-boot-sample-0.0.1.jar
-    owner: sbadmin
-    group: sbadmin
+    url: "{{ app_download_url }}"
+    dest: "/opt/{{ app_user }}/{{ app_name }}-{{ app_version }}.jar"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
     mode: 0755
-    url_username: jkadmin
-    url_password: 5a54cf80bf7f0549cf57c92a4ac9538b
+    url_username: "{{ app_download_url_user }}"
+    url_password: "{{ app_download_url_password }}"
     force_basic_auth: yes
 
-- name: deploy spring-boot-sample.service file
-  copy:
-    src: spring-boot-sample.service
-    dest: /etc/systemd/system/spring-boot-sample.service
+- name: deploy {{ app_name }} service file
+  template:
+    src: "{{ app_name }}.j2"
+    dest: "/etc/systemd/system/{{ app_name }}.service"
     owner: root
     group: root
     mode: 0664
 
-- name: reload spring-boot-sample.service
+- name: reload {{ app_name }} service
   systemd:
     daemon_reload: yes
-    name: spring-boot-sample.service
+    name: "{{ app_name }}.service"
     enabled: yes
     state: started
