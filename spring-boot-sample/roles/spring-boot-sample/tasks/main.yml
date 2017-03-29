@@ -22,7 +22,7 @@
   systemd:
     name: "{{ app_name }}.service"
     state: stopped
-  when service_file_stat.stat.exists == true
+  when service_file_stat.stat.exists == True
 
 - name: deploy {{ app_name }} file
   get_url:
