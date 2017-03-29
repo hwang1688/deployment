@@ -13,10 +13,16 @@
     home: "/opt/{{ app_user }}"
     shell: /bin/bash
 
+- name: check if {{ app_name }} service exists
+  stat:
+    path: "/etc/systemd/system/{{ app_name }}.service"
+  register: service_file_stat
+
 - name: shutdown {{ app_name }} service
   systemd:
     name: "{{ app_name }}.service"
     state: stopped
+  when service_file_stat.stat.exists == true
 
 - name: deploy {{ app_name }} file
   get_url:
