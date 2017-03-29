@@ -1,0 +1,5 @@
+---
+app_name: spring-boot-sample
+app_version: 0.0.1
+app_user: appuser
+app_download_url: "{{ app_download_url_base}}/job/{{ app_name }}-pipeline/lastStableBuild/artifact/build/libs/{{ app_name }}-{{ app_version }}.jar"
